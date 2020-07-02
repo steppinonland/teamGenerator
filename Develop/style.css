@@ -1,0 +1,26 @@
+h1, h2, h3 {
+    font-family: 'Crete Round', serif;
+}
+.card-header {
+    background-color: #F937;
+}
+.card {
+    border: 1em;
+    border-color: linen;
+    border-style: outset;
+}
+
+li {
+    font-family: 'Work Sans', sans-serif;
+}
+.list-group-item {
+    background-color: #FED;
+}
+
+body {
+    background-color: rgba(214,214,214,0.6);
+}
+
+.jumbotron {
+    background: linear-gradient(0deg, rgba(214,214,214,0.3799894957983193) 0%, rgba(90,135,241,1) 100%);
+}
