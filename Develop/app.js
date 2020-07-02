@@ -107,13 +107,13 @@ const askManager = function() {
 }
 const askEngineer = function() {
   inquirer.prompt(engineerQuests).then(data => {
-    teamInfo.push(new Engineer(data.engName, data.engId, data.Github, data.engEmail));
+    teamInfo.push(new Engineer(data.engName, data.engId, data.engEmail, data.Github));
     teammateType();
   })
 }
 const askIntern = function() {
   inquirer.prompt(internQuests).then(data => {
-    teamInfo.push(new Intern(data.internName, data.internId, data.school, data.internEmail));
+    teamInfo.push(new Intern(data.internName, data.internId, data.internEmail,  data.school));
     teammateType();
   })
 }
