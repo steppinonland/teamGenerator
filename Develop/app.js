@@ -9,59 +9,136 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
-
-inquirer.prompt([
+let teamInfo = [];
+// Here is where I wrote my code to gather information about the development team members,
+// and to create objects for each team member (using the correct classes as blueprints!)
+const managerQuests = [
   {
     type: "input",
-    name: "name",
+    name: "managerName",
     message: "What is your name?"
   },
   {
     type: "input",
-    name: "ID",
+    name: "managerId",
     message: "What is your ID number?",
-    validate: function(val) {
-        return /[1-9]/gi.test(val);
-    }
   },
   {
-    type: "checkbox",
-    message: "What's your role?",
-    name: "role",
-    choices: [
-      "Engineer", 
-      "Intern", 
-      "Manager", 
-      "None of the Above"
-    ]
+    type: "input",
+    name: "officeNumber",
+    message: "What is your office phone number?",
   },
   {
-    type: "list",
-    message: "What is your preferred method of communication?",
-    name: "contact",
-    choices: [
-      "email",
-      "phone",
-      "telekinesis"
-    ]
+    type: "input",
+    name: "managerEmail",
+    message: "What is your email?"
   }
-]).then(function(data) {
+];
 
-  var filename = data.name.toLowerCase().split(' ').join('') + ".json";
+const engineerQuests = [
+  {
+    type: "input",
+    name: "engName",
+    message: "What is your name?"
+  },
+  {
+    type: "input",
+    name: "engId",
+    message: "What is your ID number?",
+  },
+  {
+    type: "input",
+    name: "Github",
+    message: "What is your github username?",
+  },
+  {
+    type: "input",
+    name: "engEmail",
+    message: "What is your email?"
+  }
+];
 
-  fs.writeFile(filename, JSON.stringify(data, null, '\t'), function(err) {
+const internQuest = [
+  {
+    type: "input",
+    name: "internName",
+    message: "What is your name?"
+  },
+  {
+    type: "input",
+    name: "internId",
+    message: "What is your ID number?",
+  },
+  {
+    type: "input",
+    name: "school",
+    message: "What school do you attend?",
+  },
+  {
+    type: "input",
+    name: "internEmail",
+    message: "What is your email?"
+  }
+];
+const teammate = [ {
+  type: "checkbox",
+  name: "employeeType",
+  choices: ["Manager", "Engineer", "Intern", "I don't have any more members to add"],
+  message: "What type of team member are you adding?"
+}]
 
-    if (err) {
-      return console.log(err);
+const teammateType = () => {
+  inquirer.prompt(teammate).then(function(data) {
+    switch (data.employeeType) {
+      case "Manager": askManager(); break;
+      case "Engineer": askEngineer(); break;
+      case "Intern": askIntern(); break;
+      default: makeWebpage();
     }
+  })
+}
 
-    console.log("Success!");
+const askManager = function() {
+  inquirer.prompt(managerQuests).then(data => {
+    teamInfo.push(new Manager(data.managerName, data.managerId, data.officeNumber, data.managerEmail));
+    teammateType();
+  })
+}
+const askEngineer = function() {
+  inquirer.prompt(engineerQuests).then(data => {
+    teamInfo.push(new Engineer(data.engName, data.engId, data.Github, data.engEmail));
+    teammateType();
+  })
+}
+const askIntern = function() {
+  inquirer.prompt(internQuests).then(data => {
+    teamInfo.push(new Manager(data.internName, data.internId, data.school, data.internEmail));
+    teammateType();
+  })
+}
 
-  });
-});
+const makeWebpage = function () {
+  fs.writeFile("team.html", render(teamInfo), (err) => {
+    if (err) throw err;
+    console.log("New team webpage has been created.")
+  })
+}
+teammateType();
+  
+// ]).then(function(data) {
 
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
+//   fs.writeFile("team-roster.json", JSON.stringify(data, null, '\t'), function(err) {
+
+//     if (err) {
+//       return console.log(err);
+//     }
+
+//     console.log("Success!");
+
+//   });
+// });
+
+
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
