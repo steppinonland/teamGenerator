@@ -6,7 +6,7 @@ const path = require("path");
 const fs = require("fs");
 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
-const outputPath = path.join(OUTPUT_DIR, "team.html");
+const outputPath = path.join(OUTPUT_DIR, "./output");
 
 const render = require("./lib/htmlRenderer");
 let teamInfo = [];
@@ -25,13 +25,13 @@ const managerQuests = [
   },
   {
     type: "input",
-    name: "officeNumber",
-    message: "What is your office phone number?",
+    name: "managerEmail",
+    message: "What is your email?"
   },
   {
     type: "input",
-    name: "managerEmail",
-    message: "What is your email?"
+    name: "officeNumber",
+    message: "What is your office phone number?",
   }
 ];
 
@@ -48,17 +48,17 @@ const engineerQuests = [
   },
   {
     type: "input",
-    name: "Github",
-    message: "What is your github username?",
+    name: "engEmail",
+    message: "What is your email?",
   },
   {
     type: "input",
-    name: "engEmail",
-    message: "What is your email?"
+    name: "Github",
+    message: "What is your github username?",
   }
 ];
 
-const internQuest = [
+const internQuests = [
   {
     type: "input",
     name: "internName",
@@ -71,17 +71,18 @@ const internQuest = [
   },
   {
     type: "input",
-    name: "school",
-    message: "What school do you attend?",
+    name: "internEmail",
+    message: "What is your email?"
   },
   {
     type: "input",
-    name: "internEmail",
-    message: "What is your email?"
+    name: "school",
+    message: "What school do you attend?",
   }
 ];
+
 const teammate = [ {
-  type: "checkbox",
+  type: "list",
   name: "employeeType",
   choices: ["Manager", "Engineer", "Intern", "I don't have any more members to add"],
   message: "What type of team member are you adding?"
@@ -112,7 +113,7 @@ const askEngineer = function() {
 }
 const askIntern = function() {
   inquirer.prompt(internQuests).then(data => {
-    teamInfo.push(new Manager(data.internName, data.internId, data.school, data.internEmail));
+    teamInfo.push(new Intern(data.internName, data.internId, data.school, data.internEmail));
     teammateType();
   })
 }
@@ -124,20 +125,6 @@ const makeWebpage = function () {
   })
 }
 teammateType();
-  
-// ]).then(function(data) {
-
-//   fs.writeFile("team-roster.json", JSON.stringify(data, null, '\t'), function(err) {
-
-//     if (err) {
-//       return console.log(err);
-//     }
-
-//     console.log("Success!");
-
-//   });
-// });
-
 
 
 // After the user has input all employees desired, call the `render` function (required
